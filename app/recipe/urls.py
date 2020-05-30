@@ -7,5 +7,8 @@ app_name = 'recipe'
 
 
 urlpatterns = [
-    path('tags/', views.TagListCreate.as_view(), name='tag')
+    path('tags/', views.TagListCreate.as_view(), name='tag'),
+    path('ingredients/',
+         views.IngredientListCreate.as_view(),
+         name='ingredient'),
 ]
