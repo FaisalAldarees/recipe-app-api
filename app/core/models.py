@@ -1,6 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,\
-                                         PermissionsMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.conf import settings
 
 
@@ -8,7 +11,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         """create and saves a new user"""
         if not email:
-            raise ValueError('user must have an email adress')
+            raise ValueError("user must have an email adress")
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -32,14 +35,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -49,8 +51,7 @@ class Tag(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -58,14 +59,22 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    )
     title = models.CharField(max_length=255)
     time_minutes = models.IntegerField()
     price = models.DecimalField(max_digits=4, decimal_places=2)
     link = models.CharField(max_length=255, blank=True)
-    ingredient = models.ManyToManyField('Ingredient')
-    tags = models.ManyToManyField('Tag')
+    ingredients = models.ManyToManyField("Ingredient")
+    tags = models.ManyToManyField("Tag")
 
-    def __Str__(self):
+    def __str__(self):
         return self.title
+
+
+# r1
+# (i1 i2)
+
+# r2
+# (i1 i3)

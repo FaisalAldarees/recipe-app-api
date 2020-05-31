@@ -3,18 +3,16 @@ from django.contrib.auth import get_user_model
 from core import models
 
 
-def sample_user(email='test@gmailcom', password='123456'):
+def sample_user(email="test@gmailcom", password="123456"):
     return get_user_model().objects.create_user(email, password)
 
 
 class ModelTests(TestCase):
-
     def test_create_user_with_email_successful(self):
         email = "test@gmail.com"
         password = "test123"
         user = get_user_model().objects.create_user(
-            email=email,
-            password=password
+            email=email, password=password
         )
 
         self.assertEqual(user.email, email)
@@ -31,31 +29,26 @@ class ModelTests(TestCase):
 
     def test_create_new_superuser(self):
         user = get_user_model().objects.create_superuser(
-            'hello@gmail.com',
-            '123'
+            "hello@gmail.com", "123"
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
 
     def test_tag_str(self):
-        tag = models.Tag.objects.create(
-            user=sample_user(),
-            name='Vegan'
-        )
+        tag = models.Tag.objects.create(user=sample_user(), name="Vegan")
         self.assertEqual(str(tag), tag.name)
 
     def test_ingredient_str(self):
         ingredient = models.Ingredient.objects.create(
-            user=sample_user(),
-            name='Cucumber'
+            user=sample_user(), name="Cucumber"
         )
         self.assertEquals(str(ingredient), ingredient.name)
 
     def test_recipe_str(self):
         recipe = models.Recipe.objects.create(
             user=sample_user(),
-            title='Yummy Burger',
+            title="Yummy Burger",
             time_minutes=5,
-            price=5.00
+            price=5.00,
         )
-        self.assertTrue(str(recipe), recipe.title)
+        self.assertEqual(str(recipe), recipe.title)
