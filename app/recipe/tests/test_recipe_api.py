@@ -110,9 +110,9 @@ class PrivateRecipeApiTests(TestCase):
     def test_create_basic_recipe(self):
         payload = {"title": "Chocolate cake", "time_minutes": 30, "price": 22}
         res = self.client.post(RECIPES_URL, payload)
-        self.asserEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
-        recipe = Recipe.object.get(id=res.data["id"])
+        recipe = Recipe.objects.get(id=res.data["id"])
         for key in payload.keys():
             self.assertEqual(payload[key], getattr(recipe, key))
 
@@ -128,7 +128,7 @@ class PrivateRecipeApiTests(TestCase):
         }
         res = self.client.post(RECIPES_URL, payload)
 
-        self.assertEqual(res.statud_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         recipe = Recipe.objects.get(id=res.data["id"])
         tags = recipe.tags.all()
@@ -148,8 +148,8 @@ class PrivateRecipeApiTests(TestCase):
         }
         res = self.client.post(RECIPES_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        recipe = Recipe.object.get(id=res.data["id"])
+        recipe = Recipe.objects.get(id=res.data["id"])
         ingredients = recipe.ingredients.all()
-        self.assertEqual(ingredients.count, 2)
+        self.assertEqual(ingredients.count(), 2)
         self.assertIn(ingredient1, ingredients)
         self.assertIn(ingredient2, ingredients)
