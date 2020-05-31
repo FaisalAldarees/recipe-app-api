@@ -49,9 +49,14 @@ class RecipeListCreate(generics.ListCreateAPIView):
     def get_queryset(self,):
         return self.queryset.filter(user=self.request.user)
 
+    def perform_create(
+        self, serializer,
+    ):
+        serializer.save(user=self.request.user)
+
 
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = serializers.RecipeSerializer
+    serializer_class = serializers.RecipeDetailSerializer
     queryset = Recipe.objects.all()
     # lookup_field = 'name'
     authentication_classes = (TokenAuthentication,)
